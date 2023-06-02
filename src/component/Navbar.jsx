@@ -19,12 +19,12 @@ const Navbar = () => {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('userName')
-    localStorage.removeItem('email')
+    localStorage.removeItem("token");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("email");
     localStorage.removeItem('userID')
-    navigate('/')
-  }
+    navigate("/");
+  };
 
   return (
     <div id="navbar" className="w-[270px] h-full fixed bg-[#121212] flex flex-col rounded-r-[12px]">
