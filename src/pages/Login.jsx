@@ -37,15 +37,12 @@ const Login = () => {
       .request(config)
       .then((response) => {
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userName", response.data.user.name);
-        localStorage.setItem('email', response.data.user.email)
-        localStorage.setItem('userID', response.data.user.id)
-        console.log(JSON.stringify(response.data));
-        alert('login berhasil!')
+        localStorage.setItem("name", response.data.user.name);
+        localStorage.setItem('user_id', response.data.user.id)
         navigate("/home");
       })
       .catch((error) => {
-        alert('login gagal')
+        alert('Email atau Password belum terdaftar')
         console.log(error);
       });
   };

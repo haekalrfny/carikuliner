@@ -13,11 +13,10 @@ const Home = () => {
   const navigate = useNavigate();
 
   const [data, setData] = useState([]);
-
   const [loading, setLoading] = useState(false);
-
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResult, setSearchResult] = useState([]);
+  const [visibleCards, setVisibleCards] = useState(6);
 
   useEffect(() => {
     const checkUserToken = () => {
@@ -58,20 +57,30 @@ const Home = () => {
   useEffect(() => {
     const results = data.filter((item) =>
       item.nama_kuliner.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    )
     setSearchResult(results);
   }, [searchQuery, data]);
+
+  const loadMoreCards = () => {
+    setVisibleCards((prevVisibleCards) => {
+      const newVisibleCards = prevVisibleCards + 6;
+      if (newVisibleCards >= searchResult.length) {
+        document.getElementById("load-more").style.display = "none";
+      }
+      return newVisibleCards;
+    });
+  };
 
   if (loading) {
     return (
       <div className="w-full h-screen flex justify-center items-center">
-       <div className="loader">
-	<div></div>
-	<div></div>
-	<div></div>
-	<div></div>
-	<div></div>
-</div>
+        <div className="loader">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
       </div>
     );
   } else {
@@ -79,10 +88,7 @@ const Home = () => {
       <>
         <div className="w-full h-full bg-[#292929]">
           <Navbar />
-          <div
-            id="navbar-responsive"
-            className="h-full fixed flex items-center"
-          >
+          <div id="navbar-responsive" className="h-full fixed flex items-center">
             <ResponsiveNav />
           </div>
           <div
@@ -115,23 +121,35 @@ const Home = () => {
                 Daftar Kuliner
               </h1>
               {searchResult.length > 0 ? (
-                <div
-                  key={id}
-                  id="home-card"
-                  className="w-full mx-[3%] flex flex-wrap justify-start gap-5"
-                >
-                  {searchResult?.map((item) => {
-                    return (
-                      <Card
-                        key={item.id}
-                        nama_kuliner={item.nama_kuliner}
-                        deskripsi={item.deskripsi}
-                        image={item.image}
-                        detail={`/detail/${item.id}`}
-                      />
-                    );
-                  })}
-                </div>
+                <>
+                  <div
+                    key={id}
+                    id="home-card"
+                    className="w-full mx-[3%] flex flex-wrap justify-start gap-5"
+                  >
+                    {searchResult
+                      .slice(0, visibleCards)
+                      .map((item) => {
+                        return (
+                          <Card
+                            key={item.id}
+                            nama_kuliner={item.nama_kuliner}
+                            deskripsi={item.deskripsi}
+                            image={item.image}
+                            detail={`/detail/${item.id}`}
+                          />
+                        );
+                      })}
+                  </div>
+                  <div id="load-more" className="w-full flex justify-center">
+                    <button
+                      className="text-white bg-[#f15e3c] border border-[#f15e3c] rounded-full hover:bg-transparent text-sm py-1 px-3 mt-4"
+                      onClick={loadMoreCards}
+                    >
+                      Load More
+                    </button>
+                  </div>
+                </>
               ) : (
                 <div>
                   <p className="text-gray-400">kuliner tidak ada</p>

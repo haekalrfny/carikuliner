@@ -7,20 +7,12 @@ import logoutIcon from "../assets/sign-out-alt.png";
 
 const ResponsiveNav = () => {
 
-  const userID = localStorage.getItem('userID')
+  const user_id = localStorage.getItem('user_id')
 
   const active = ({ isActive }) => {
     return isActive
       ? "bg-[#f15e3c] p-3 rounded-full"
       : "hover:bg-[#f15e3c] p-3 rounded-full";
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userName");
-    localStorage.removeItem("email");
-    localStorage.removeItem('userID')
-    navigate("/");
   };
 
   return (
@@ -33,7 +25,7 @@ const ResponsiveNav = () => {
           <NavLink to="/home" className={active}>
             <img src={homeIcon} alt="" />
           </NavLink>
-          <NavLink to={`/create/${userID}`} className={active}>
+          <NavLink to={`/create/${user_id}`} className={active}>
             <img src={addIcon} alt="" />
           </NavLink>
           <NavLink to="/profile" className={active}>
@@ -42,7 +34,7 @@ const ResponsiveNav = () => {
         </div>
         <div className="w-full flex justify-center">
           <NavLink
-            onClick={handleLogout}
+            to='/logout'
             className="hover:bg-[#f15e3c] p-3 rounded-full" 
           >
             <img src={logoutIcon} alt="" />

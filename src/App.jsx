@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Bio from "./pages/Bio";
+import LogoutButton from "./pages/Logout";
 import AddFood from "./pages/AddFood";
 import DetailFood from "./pages/DetailFood";
 import EditFood from "./pages/EditFood";
@@ -17,9 +19,11 @@ const App = () => {
           <Route path="/register" element={<Register />} />
           <Route path="/home" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/create/:userID" element={<AddFood />} />
-          <Route path="/update" element={<EditFood />} />
+          <Route path="/create/:user_id" element={<AddFood />} />
+          <Route path="/update/:id" element={<EditFood />} />
           <Route path="/detail/:id" element={<DetailFood />} />
+          <Route path='/logout' element={<LogoutButton />} />
+          <Route path='/updatebio' element={<Bio/>} />
         </Routes>
       </BrowserRouter>
     </div>

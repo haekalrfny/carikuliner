@@ -8,23 +8,13 @@ import logoutIcon from "../assets/sign-out-alt.png";
 
 const Navbar = () => {
 
-  const navigate = useNavigate()
-
-  const userID = localStorage.getItem('userID')
+  const user_id = localStorage.getItem('user_id')
 
   const active = ({ isActive }) => {
     return isActive
       ? 'flex px-3 p-2 gap-5 items-center bg-[#f15e3c] rounded-full '
       : 'flex px-3 p-2 gap-5 items-center hover:bg-[#f15e3c] rounded-full transition duration-200'
   }
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userName");
-    localStorage.removeItem("email");
-    localStorage.removeItem('userID')
-    navigate("/");
-  };
 
   return (
     <div id="navbar" className="w-[270px] h-full fixed bg-[#121212] flex flex-col rounded-r-[12px]">
@@ -44,7 +34,7 @@ const Navbar = () => {
             <h1 className="text-white text-base font-semibold">Beranda</h1>
           </NavLink>
           <NavLink
-            to={`/create/${userID}`}
+            to={`/create/${user_id}`}
             className={active}
           >
             <img src={addIcon} alt="" />
@@ -62,7 +52,7 @@ const Navbar = () => {
         </div>
         <div className="w-full px-[10%]">
           <NavLink
-            onClick={handleLogout}
+            to='/logout'
             className='flex px-3 p-2 gap-5 items-center hover:bg-[#f15e3c] rounded-full transition duration-200'
           >
             <img src={logoutIcon} alt="" />

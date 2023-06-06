@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import InputFood from "../component/InputFood";
-import { useSpring, animated } from "react-spring";
+import {HiOutlinePhoto} from 'react-icons/hi2'
 import Navbar from "../component/Navbar";
-import addKuliner from "../assets/addKuliner.svg";
 import ResponsiveNav from "../component/ResponsiveNav";
 import instance from "../api/api";
 import { useNavigate } from "react-router-dom";
@@ -19,7 +18,7 @@ const AddFood = () => {
 
   const [loading, setLoading] = useState(false);
 
-  const userID = localStorage.getItem("userID");
+  const user_id = localStorage.getItem("user_id");
 
   useEffect(() => {
     const checkUserToken = () => {
@@ -30,12 +29,6 @@ const AddFood = () => {
     };
     checkUserToken();
   }, [navigate]);
-
-  const animationProps = useSpring({
-    from: { opacity: 0, transform: "translateY(0px)" },
-    to: { opacity: 1, transform: "translateY(1px)" },
-    config: { duration: 1000 },
-  });
 
   const fileChangeHandler = (e) => {
     setImage(e.target.files[0]);
@@ -55,7 +48,7 @@ const AddFood = () => {
     let config = {
       method: "post",
       maxBodyLength: Infinity,
-      url: `/create/${userID}`,
+      url: `/create/${user_id}`,
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
@@ -66,13 +59,11 @@ const AddFood = () => {
       .request(config)
       .then((response) => {
         setLoading(false);
-        console.log(JSON.stringify(response.data));
         navigate("/home");
       })
       .catch((error) => {
         setLoading(false);
         console.log(error);
-        navigate("/home");
       });
   };
 
@@ -90,7 +81,7 @@ const AddFood = () => {
     );
   } else {
     return (
-      <div id="add-food-page" className="w-full h-screen bg-[#292929]">
+      <div className="w-full h-screen bg-[#292929]">
         <Navbar />
         <div id="navbar-responsive" className="h-full fixed flex items-center">
           <ResponsiveNav />
@@ -102,96 +93,77 @@ const AddFood = () => {
           <MobileNav />
         </div>
         <div
-          id="add-food-parent"
-          className="w-full h-full pl-[270px] flex justify-center items-center"
+          className="w-full h-full pl-[270px] pt-[3%] flex flex-col gap-5"
         >
-          <div
-            id="add-food"
-            className="w-[95%] h-[90%] bg-[#121212] rounded-[20px] flex"
-          >
-            <div
-              id="add-food-left"
-              className="w-[50%] p-10 h-full flex flex-col justify-center items-center gap-24"
-            >
-              <div>
-                <h1 className="text-white text-3xl font-bold">
-                  Tambah Kuliner
-                </h1>
+          <div className="px-[2.5%]">
+            <h1 className="text-white text-4xl font-bold">Tambah Kuliner</h1>
+            <p className="text-gray-500 text-sm">
+              Bagikan artikel anda disini
+            </p>
+          </div>
+          <form onSubmit={handleSubmit} className="flex gap-5 px-[2.5%]">
+            <div className="w-[50%] flex flex-col">
+              <div className="flex flex-col">
+                <label className="text-white text-lg font-medium py-2 pl-1">Nama Kuliner</label>
+                <InputFood placeholder='Masukkan nama kuliner' type='text' value={nama_kuliner} onChange={(e) => setNama_kuliner(e.target.value)} />
               </div>
-              <animated.img
-                src={addKuliner}
-                alt=""
-                className="animated-image"
-                style={animationProps}
-              />
-            </div>
-            <form
-              onSubmit={handleSubmit}
-              id="add-food-right"
-              className="w-[50%] h-full flex flex-col gap-5 items-center py-[5%] px-[5%]"
-            >
-              <h1 id="add-food-text" className="hidden">
-                Tambah Kuliner
-              </h1>
-              <div
-                id="add-photo"
-                className="w-full h-[50%] bg-[#292929] rounded-[20px] flex flex-col justify-center items-center gap-2 cursor-pointer"
-              >
-                {photo ? (
-                  <img
-                    className="w-full h-full rounded-[20px]"
-                    src={photo}
-                    alt={nama_kuliner}
-                    onClick={() => {
-                      document.querySelector("#input-file").click();
-                    }}
+              <div className="flex flex-col">
+                <label className="text-white text-lg font-medium py-2 pl-1">Foto Kuliner</label>
+                <div
+                  className="w-full h-[260px] bg-[#292929] rounded-[12px] flex flex-col justify-center items-center cursor-pointer overflow-hidden border border-[#292929]"
+                >
+                  {photo ? (
+                    <img
+                      className="w-full bg-center rounded-[12px] hover:opacity-70"
+                      src={photo}
+                      alt={nama_kuliner}
+                      onClick={() => {
+                        document.querySelector("#input-file").click();
+                      }}
+                    />
+                  ) : (
+                    <div
+                      onClick={() => {
+                        document.querySelector("#input-file").click();
+                      }}
+                      className="w-full h-full flex justify-center items-center flex-col cursor-pointer rounded-[12px] bg-[#121212] hover:bg-[#000000]"
+                    >
+                        <span><HiOutlinePhoto className="w-6 h-6 text-gray-400 mb-1" /></span>
+                      <p className="text-gray-400">Masukkan Gambar</p>
+                      <p className="text-gray-400">file must be: jpg, pgeg, png.</p>
+                    </div>
+                  )}
+                  <input
+                    type="file"
+                    className="hidden"
+                    id="input-file"
+                    onChange={fileChangeHandler}
                   />
-                ) : (
-                  <div
-                    id="add-photo"
-                    onClick={() => {
-                      document.querySelector("#input-file").click();
-                    }}
-                    className="w-full h-full flex justify-center items-center flex-col cursor-pointer rounded-[20px] bg-[#292929] hover:bg-black"
-                  >
-                    <p className="text-white">Masukkan Gambar</p>
-                    <p className="text-white">file must be: jpg, pgeg, png.</p>
-                  </div>
-                )}
-                <input
-                  type="file"
-                  className="hidden"
-                  id="input-file"
-                  onChange={fileChangeHandler}
-                />
+                </div>
               </div>
-              <div className="w-full flex flex-col gap-5">
-                <InputFood
-                  placeholder="Nama kuliner"
-                  type="text"
-                  value={nama_kuliner}
-                  onChange={(e) => setNama_kuliner(e.target.value)}
-                />
-                <InputFood
-                  placeholder="Asal daerah"
-                  type="text"
-                  value={daerah}
-                  onChange={(e) => setDaerah(e.target.value)}
-                />
-                <InputFood
-                  placeholder="Deskripsi"
-                  type="text"
+            </div>
+            <div className="w-[50%] flex flex-col">
+              <div className="flex flex-col">
+                <label className="text-white text-lg font-medium py-2 pl-1">Daerah Asal</label>
+                <InputFood placeholder='Masukkan asal daerah' type='text' value={daerah} onChange={(e) => setDaerah(e.target.value)}/>
+              </div>
+              <div className="flex flex-col">
+                <label className="text-white text-lg font-medium py-2 pl-1">Deskripsi</label>
+                <textarea
+                  placeholder="Masukkan Deskripsi"
+                  className="w-full rounded-[12px] bg-[#121212] outline-none text-white p-3"
                   value={deskripsi}
                   onChange={(e) => setDeskripsi(e.target.value)}
-                />
+                  rows={10}
+                ></textarea>
               </div>
-              <div className="w-full">
-                <button className="w-[100%] h-10 rounded-full bg-[#f15e3c] hover:bg-transparent hover:border border-[#f15e3c]  flex justify-center items-center">
-                  <p className="text-white text-[15px]">Tambah</p>
+              <div>
+              <button className="w-full mt-5 h-10 rounded-[12px] bg-[#f15e3c] hover:bg-transparent hover:border border-[#f15e3c] flex justify-center items-center">
+                  <p className="text-white text-sm ">Tambah</p>
                 </button>
               </div>
-            </form>
-          </div>
+            </div>
+          </form>
         </div>
       </div>
     );

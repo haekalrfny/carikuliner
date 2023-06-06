@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import InputFood from "../component/InputFood";
-import {IoIosArrowBack} from 'react-icons/io'
+import { useSpring, animated } from "react-spring";
+import addKuliner from "../assets/addKuliner.svg";
+import backIcon from "../assets/angle-left.png";
+import photoIcon from "../assets/file-image.png";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import instance from "../api/api";
 
@@ -24,6 +27,12 @@ const EditFood = () => {
     };
     checkUserToken();
   }, [navigate]);
+
+  const animationProps = useSpring({
+    from: { opacity: 0, transform: "scale(0.8)" },
+    to: { opacity: 1, transform: "scale(1)" },
+    config: { duration: 1000 },
+  });
 
   useEffect(() => {
     setLoading(true);
@@ -110,92 +119,97 @@ const EditFood = () => {
     );
   } else {
     return (
-      <div className="w-full h-screen bg-[#292929]">
-        <div className="w-full h-full pt-[40px] flex flex-col gap-5">
-          <div className="px-5 flex items-center gap-5">
-          <NavLink to="/home">
-                 <IoIosArrowBack className="text-[#f15e3c] text-[50px]"/>
+      <div id="edit-food-page" className="w-full h-screen bg-[#292929]">
+        <div
+          id="edit-food-parent"
+          className="w-full h-full flex flex-col gap-5 pt-[40px] "
+        >
+          <div id="edit-food" className="w-full h-full flex">
+            <div
+              id="edit-food-left"
+              className="w-[50%] p-10 h-full flex flex-col justify-center items-center gap-20"
+            >
+              <div className="flex gap-20">
+                <NavLink to="/home">
+                  <img src={backIcon} alt="" />
                 </NavLink>
-            <div>
-              <h1 className="text-white text-4xl font-bold">Ubah Kuliner</h1>
-              <p className="text-gray-500 text-sm">Ubahlah kuliner anda</p>
+                <h1 className="text-white text-3xl font-bold">Edit Kuliner</h1>
+              </div>
+              <animated.img
+                src={addKuliner}
+                alt=""
+                className="animated-image"
+                style={animationProps}
+              />
             </div>
-          </div>
-          <form onSubmit={handleSubmit} className="flex gap-5 px-5">
-            <div className="w-[50%] flex flex-col">
-              <div className="flex flex-col">
-                <label className="text-white text-lg font-medium py-2 pl-1">
-                  Nama Kuliner
-                </label>
+            <form
+              onSubmit={handleSubmit}
+              id="edit-food-right"
+              className="w-[50%] h-full flex flex-col gap-5 items-center py-[5%] px-[5%]"
+            >
+              <div id="edit-food-text" className="hidden">
+                <NavLink to="/home">
+                  <img src={backIcon} alt="" />
+                </NavLink>
+                <h1 className="text-4xl text-white font-bold">Edit Kuliner</h1>
+              </div>
+              <div
+                id="add-photo"
+                className="w-full h-[50%] bg-[#121212] rounded-[20px] flex flex-col justify-center items-center gap-2 cursor-pointer"
+              >
+                {photo ? (
+                  <img
+                    className="rounded-[20px] w-full h-full cursor-pointer"
+                    src={photo}
+                    alt={nama_kuliner}
+                    onClick={() => {
+                      document.querySelector("#input-file").click();
+                    }}
+                  />
+                ) : (
+                  <div
+                    id="add-photo"
+                    onClick={() => {
+                      document.querySelector("#input-file").click();
+                    }}
+                    className="w-full h-full cursor-pointer rounded-[20px]"
+                  ></div>
+                )}
+                <input
+                  type="file"
+                  className="hidden"
+                  id="input-file"
+                  onChange={fileChangeHandler}
+                />
+              </div>
+              <div className="w-full flex flex-col gap-5">
                 <InputFood
-                  placeholder="Masukkan nama kuliner"
+                  placeholder="Nama kuliner"
                   type="text"
                   value={nama_kuliner}
                   onChange={(e) => setNama_kuliner(e.target.value)}
                 />
-              </div>
-              <div className="flex flex-col">
-                <label className="text-white text-lg font-medium py-2 pl-1">
-                  Foto Kuliner
-                </label>
-                <div className="w-full h-[340px] bg-[#121212] rounded-[12px] flex flex-col justify-center items-center cursor-pointer overflow-hidden border border-[#292929]">
-                  {photo ? (
-                    <img
-                      className="rounded-[12px] w-full bg-center hover:opacity-70"
-                      src={photo}
-                      alt={nama_kuliner}
-                      onClick={() => {
-                        document.querySelector("#input-file").click();
-                      }}
-                    />
-                  ) : (
-                    <div
-                      onClick={() => {
-                        document.querySelector("#input-file").click();
-                      }}
-                      className="w-full h-full cursor-pointer rounded-[12px]"
-                    ></div>
-                  )}
-                  <input
-                    type="file"
-                    className="hidden"
-                    id="input-file"
-                    onChange={fileChangeHandler}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="w-[50%] flex flex-col">
-              <div className="flex flex-col">
-                <label className="text-white text-lg font-medium py-2 pl-1">
-                  Daerah asal
-                </label>
                 <InputFood
-                  placeholder="Masukkan daerah"
+                  placeholder="Asal daerah"
                   type="text"
                   value={daerah}
                   onChange={(e) => setDaerah(e.target.value)}
                 />
-              </div>
-              <div className="flex flex-col">
-                <label className="text-white text-lg font-medium py-2 pl-1">
-                  Deskripsi
-                </label>
-                <textarea
-                  placeholder="Masukkan Deskripsi"
-                  className="w-full rounded-[12px] bg-[#121212] outline-none text-white p-3"
+                <InputFood
+                  placeholder="Deskripsi"
+                  type="text"
                   value={deskripsi}
                   onChange={(e) => setDeskripsi(e.target.value)}
-                  rows={13}
-                ></textarea>
+                />
               </div>
-              <div>
-                <button className="w-full mt-5 h-10 rounded-[12px] bg-[#f15e3c] hover:bg-transparent hover:border border-[#f15e3c] flex justify-center items-center">
-                  <p className="text-white text-sm ">Ubah</p>
+
+              <div className="w-full">
+                <button className="w-[100%] h-10 rounded-full bg-[#f15e3c] hover:bg-transparent hover:border border-[#f15e3c]  flex justify-center items-center">
+                  <p className="text-white text-[15px]">Edit</p>
                 </button>
               </div>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     );

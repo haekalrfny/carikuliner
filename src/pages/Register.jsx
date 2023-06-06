@@ -47,13 +47,11 @@ const Register = () => {
     instance
       .request(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data));
         navigate("/");
-        alert("berhasil");
       })
       .catch((error) => {
         console.log(error);
-        alert("gagal");
+        alert("Email atau Password sudah dipakai");
       });
   };
 
