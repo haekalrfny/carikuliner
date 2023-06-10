@@ -5,17 +5,19 @@ import backIcon from "../assets/angle-left.png";
 import infoIcon from "../assets/menu-dots-vertical.png";
 import cancelIcon from "../assets/cross-small.png";
 import instance from "../api/api";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const DetailFood = () => {
   const { id } = useParams();
 
-  const [data, setData] = useState('');
+  const [data, setData] = useState("");
   const [isLiked, setIsLiked] = useState(false);
   const [info, setInfo] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const user_id = localStorage.getItem('user_id')
-  const role = localStorage.getItem('role')
+  const user_id = localStorage.getItem("user_id");
+  const role = localStorage.getItem("role");
 
   const navigate = useNavigate();
 
@@ -30,7 +32,7 @@ const DetailFood = () => {
   }, []);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     const getData = () => {
       let config = {
         method: "post",
@@ -43,11 +45,11 @@ const DetailFood = () => {
       instance
         .request(config)
         .then((response) => {
-          setLoading(false)
+          setLoading(false);
           setData(response.data.data.kuliner);
         })
         .catch((error) => {
-          setLoading(false)
+          setLoading(false);
           console.log(error);
         });
     };
@@ -55,7 +57,7 @@ const DetailFood = () => {
   }, []);
 
   const deleteData = (id) => {
-    setLoading(true)
+    setLoading(true);
     let config = {
       method: "post",
       url: `/delete/${id}`,
@@ -67,13 +69,17 @@ const DetailFood = () => {
     instance
       .request(config)
       .then((response) => {
-        setLoading(false)
+        setLoading(false);
         const newData = data && data.id !== id;
         setData(newData);
-        navigate("/home");
+        notifySuccess();
+        setTimeout(() => {
+          navigate('/home')
+        }, 2000)
       })
       .catch((error) => {
-        setLoading(false)
+        setLoading(false);
+        notifyWarning();
         console.log(error);
       });
   };
@@ -82,17 +88,43 @@ const DetailFood = () => {
     setIsLiked(!isLiked);
   };
 
+  const notifySuccess = () => {
+    toast.error("Kuliner dihapus", {
+      position: "top-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  };
+
+  const notifyWarning = () => {
+    toast.error("Error", {
+      position: "top-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  };
+
   if (loading) {
     return (
-      <div className="w-full h-screen flex justify-center items-center">
-        <div className="loader">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
+      <div className="flex items-center justify-center h-screen">
+      <div className="loader">
+        <div className="orbe" style={{ "--index": 0 }}></div>
+        <div className="orbe" style={{ "--index": 1 }}></div>
+        <div className="orbe" style={{ "--index": 2 }}></div>
+        <div className="orbe" style={{ "--index": 3 }}></div>
+        <div className="orbe" style={{ "--index": 4 }}></div>
       </div>
+    </div>
     )
   } else {
     return (
@@ -120,13 +152,15 @@ const DetailFood = () => {
                 >
                   <img className="w-[25px] h-[25px]" src={backIcon} alt="" />
                 </NavLink>
-                {data.user_id == user_id || role == 1 ? (<NavLink
-                  id="icon-info"
-                  onClick={() => setInfo(true)}
-                  className="w-[50px] h-[50px] bg-[#292929] rounded-full flex justify-center items-center"
-                >
-                  <img className="w-[25px] h-[25px]" src={infoIcon} alt="" />
-                </NavLink>): null}
+                {data.user_id == user_id || role == 1 ? (
+                  <NavLink
+                    id="icon-info"
+                    onClick={() => setInfo(true)}
+                    className="w-[50px] h-[50px] bg-[#292929] rounded-full flex justify-center items-center"
+                  >
+                    <img className="w-[25px] h-[25px]" src={infoIcon} alt="" />
+                  </NavLink>
+                ) : null}
               </div>
               <div
                 id="detail-img"
@@ -162,7 +196,7 @@ const DetailFood = () => {
               <div id="detail-1" className="w-full h-[10%] flex flex-col">
                 <h1
                   id="detail-title"
-                  className="text-4xl text-[#f15e3c] font-bold mb-1"
+                  className="text-4xl text-[#f15e3c] font-bold"
                 >
                   {data.nama_kuliner}
                 </h1>
@@ -188,11 +222,11 @@ const DetailFood = () => {
                   <span className="text-[#f15e3c]"> {data.user.name}</span>.
                 </p>
                 <IoHeart
-          className={`w-[30px] h-[30px] cursor-pointer ${
-            isLiked ? "text-red-500" : "text-gray-400"
-          }`}
-          onClick={handleLikeClick}
-        />
+                  className={`w-[30px] h-[30px] cursor-pointer ${
+                    isLiked ? "text-red-500" : "text-gray-400"
+                  }`}
+                  onClick={handleLikeClick}
+                />
               </div>
             </div>
             {info ? (
@@ -219,7 +253,11 @@ const DetailFood = () => {
                       onClick={() => deleteData(data.id)}
                       className="bg-[#f15e3c] border border-[#f15e3c] rounded-[20px] flex justify-center items-center px-5 py-2 hover:bg-transparent"
                     >
-                      <span className="text-white">Delete</span>
+                      {loading ? (
+                        <div className="load"></div>
+                      ) : (
+                        <span className="text-white">Delete</span>
+                      )}
                     </NavLink>
                   </div>
                 </div>
@@ -227,6 +265,18 @@ const DetailFood = () => {
             ) : null}
           </div>
         )}
+        <ToastContainer
+          position="top-right"
+          autoClose={1000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
       </>
     );
   }

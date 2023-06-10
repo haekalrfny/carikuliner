@@ -200,15 +200,15 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <div className="w-full h-screen flex justify-center items-center">
-        <div className="loader">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
+      <div className="flex items-center justify-center h-screen">
+      <div className="loader">
+        <div className="orbe" style={{ "--index": 0 }}></div>
+        <div className="orbe" style={{ "--index": 1 }}></div>
+        <div className="orbe" style={{ "--index": 2 }}></div>
+        <div className="orbe" style={{ "--index": 3 }}></div>
+        <div className="orbe" style={{ "--index": 4 }}></div>
       </div>
+    </div>
     );
   } else {
     return (

@@ -3,8 +3,8 @@ import InputFood from "../component/InputFood";
 import { IoIosArrowBack } from "react-icons/io";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
 import instance from "../api/api";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const EditFood = () => {
   const { id } = useParams();
@@ -90,20 +90,20 @@ const EditFood = () => {
       .request(config)
       .then((response) => {
         setLoading(false);
-        notifySuccess()
+        notifySuccess();
         setTimeout(() => {
-          navigate('/home')
-        }, 2000)
+          navigate("/home");
+        }, 2000);
       })
       .catch((error) => {
         setLoading(false);
-        notifyWarning()
+        notifyWarning();
         console.log(error);
       });
   };
 
   const notifySuccess = () => {
-    toast.success('Kuliner diubah', {
+    toast.success("Kuliner diubah", {
       position: "top-right",
       autoClose: 1000,
       hideProgressBar: false,
@@ -116,7 +116,7 @@ const EditFood = () => {
   };
 
   const notifyWarning = () => {
-    toast.error('Error', {
+    toast.error("Error", {
       position: "top-right",
       autoClose: 1000,
       hideProgressBar: false,
@@ -128,120 +128,133 @@ const EditFood = () => {
     });
   };
 
-  return (
-    <div className="w-full h-screen bg-[#292929]">
-      <div className="w-full h-full pt-[40px] flex flex-col gap-5">
-        <div className="px-5 flex items-center gap-5">
-          <NavLink to="/home">
-            <IoIosArrowBack className="text-[#f15e3c] text-[50px]" />
-          </NavLink>
-          <div>
-            <h1 className="text-white text-4xl font-bold">Ubah Kuliner</h1>
-            <p className="text-gray-500 text-sm">Ubahlah kuliner anda</p>
-          </div>
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <div className="loader">
+          <div className="orbe" style={{ "--index": 0 }}></div>
+          <div className="orbe" style={{ "--index": 1 }}></div>
+          <div className="orbe" style={{ "--index": 2 }}></div>
+          <div className="orbe" style={{ "--index": 3 }}></div>
+          <div className="orbe" style={{ "--index": 4 }}></div>
         </div>
-        <form
-          id="edit-form"
-          onSubmit={handleSubmit}
-          className="flex gap-5 px-5"
-        >
-          <div id="form-parent" className="w-[50%] flex flex-col">
-            <div className="flex flex-col">
-              <label className="text-white text-lg font-medium py-2 pl-1">
-                Nama Kuliner
-              </label>
-              <InputFood
-                placeholder="Masukkan nama kuliner"
-                type="text"
-                value={nama_kuliner}
-                onChange={(e) => setNama_kuliner(e.target.value)}
-              />
+      </div>
+    );
+  } else {
+    return (
+      <div className="w-full h-screen bg-[#292929]">
+        <div className="w-full h-full pt-[40px] flex flex-col gap-5">
+          <div className="px-5 flex items-center gap-5">
+            <NavLink to="/home">
+              <IoIosArrowBack className="text-[#f15e3c] text-[50px]" />
+            </NavLink>
+            <div>
+              <h1 className="text-white text-4xl font-bold">Ubah Kuliner</h1>
+              <p className="text-gray-500 text-sm">Ubahlah kuliner anda</p>
             </div>
-            <div className="flex flex-col">
-              <label className="text-white text-lg font-medium py-2 pl-1">
-                Foto Kuliner
-              </label>
-              <div
-                id="edit-photo"
-                className="w-full h-[340px] bg-[#121212] rounded-[12px] flex flex-col justify-center items-center cursor-pointer overflow-hidden border border-[#292929]"
-              >
-                {photo ? (
-                  <img
-                    className="rounded-[12px] w-full bg-center hover:opacity-70"
-                    src={photo}
-                    alt={nama_kuliner}
-                    onClick={() => {
-                      document.querySelector("#input-file").click();
-                    }}
-                  />
-                ) : (
-                  <div
-                    onClick={() => {
-                      document.querySelector("#input-file").click();
-                    }}
-                    className="w-full h-full cursor-pointer rounded-[12px]"
-                  ></div>
-                )}
-                <input
-                  type="file"
-                  className="hidden"
-                  id="input-file"
-                  onChange={fileChangeHandler}
+          </div>
+          <form
+            id="edit-form"
+            onSubmit={handleSubmit}
+            className="flex gap-5 px-5"
+          >
+            <div id="form-parent" className="w-[50%] flex flex-col">
+              <div className="flex flex-col">
+                <label className="text-white text-lg font-medium py-2 pl-1">
+                  Nama Kuliner
+                </label>
+                <InputFood
+                  placeholder="Masukkan nama kuliner"
+                  type="text"
+                  value={nama_kuliner}
+                  onChange={(e) => setNama_kuliner(e.target.value)}
                 />
               </div>
+              <div className="flex flex-col">
+                <label className="text-white text-lg font-medium py-2 pl-1">
+                  Foto Kuliner
+                </label>
+                <div
+                  id="edit-photo"
+                  className="w-full h-[340px] bg-[#121212] rounded-[12px] flex flex-col justify-center items-center cursor-pointer overflow-hidden border border-[#292929]"
+                >
+                  {photo ? (
+                    <img
+                      className="rounded-[12px] w-full bg-center hover:opacity-70"
+                      src={photo}
+                      alt={nama_kuliner}
+                      onClick={() => {
+                        document.querySelector("#input-file").click();
+                      }}
+                    />
+                  ) : (
+                    <div
+                      onClick={() => {
+                        document.querySelector("#input-file").click();
+                      }}
+                      className="w-full h-full cursor-pointer rounded-[12px]"
+                    ></div>
+                  )}
+                  <input
+                    type="file"
+                    className="hidden"
+                    id="input-file"
+                    onChange={fileChangeHandler}
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-          <div id="form-children" className="w-[50%] flex flex-col">
-            <div className="flex flex-col">
-              <label className="text-white text-lg font-medium py-2 pl-1">
-                Daerah asal
-              </label>
-              <InputFood
-                placeholder="Masukkan daerah"
-                type="text"
-                value={daerah}
-                onChange={(e) => setDaerah(e.target.value)}
-              />
+            <div id="form-children" className="w-[50%] flex flex-col">
+              <div className="flex flex-col">
+                <label className="text-white text-lg font-medium py-2 pl-1">
+                  Daerah asal
+                </label>
+                <InputFood
+                  placeholder="Masukkan daerah"
+                  type="text"
+                  value={daerah}
+                  onChange={(e) => setDaerah(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col">
+                <label className="text-white text-lg font-medium py-2 pl-1">
+                  Deskripsi
+                </label>
+                <textarea
+                  placeholder="Masukkan Deskripsi"
+                  className="w-full rounded-[12px] bg-[#121212] outline-none text-white p-3"
+                  value={deskripsi}
+                  onChange={(e) => setDeskripsi(e.target.value)}
+                  rows={13}
+                ></textarea>
+              </div>
+              <div>
+                <button className="w-full mt-5 h-10 rounded-[12px] bg-[#f15e3c] hover:bg-transparent hover:border border-[#f15e3c] flex justify-center items-center">
+                  {loading ? (
+                    <div class="load"></div>
+                  ) : (
+                    <p className="text-white text-sm ">Ubah</p>
+                  )}
+                </button>
+              </div>
             </div>
-            <div className="flex flex-col">
-              <label className="text-white text-lg font-medium py-2 pl-1">
-                Deskripsi
-              </label>
-              <textarea
-                placeholder="Masukkan Deskripsi"
-                className="w-full rounded-[12px] bg-[#121212] outline-none text-white p-3"
-                value={deskripsi}
-                onChange={(e) => setDeskripsi(e.target.value)}
-                rows={13}
-              ></textarea>
-            </div>
-            <div>
-              <button className="w-full mt-5 h-10 rounded-[12px] bg-[#f15e3c] hover:bg-transparent hover:border border-[#f15e3c] flex justify-center items-center">
-                {loading ? (
-                  <div class="load"></div>
-                ): (
-                  <p className="text-white text-sm ">Ubah</p>
-                )}
-                
-              </button>
-            </div>
-          </div>
-        </form>
+          </form>
+        </div>
+        <ToastContainer
+          position="top-right"
+          autoClose={1000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
       </div>
-      <ToastContainer
-        position="top-right"
-        autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
-    </div>
-  );
+    );
+  }
 };
 
 export default EditFood;

@@ -184,7 +184,7 @@ const AddFood = () => {
             <div>
               <button className="w-full mt-5 h-10 rounded-[12px] bg-[#f15e3c] hover:bg-transparent hover:border border-[#f15e3c] flex justify-center items-center">
                 {loading ? (
-                  <div class="load"></div>
+                  <div className="load"></div>
                 ) : (
                   <p className="text-white text-sm ">Tambah</p>
                 )}
