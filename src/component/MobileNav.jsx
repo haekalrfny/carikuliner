@@ -1,11 +1,39 @@
 import React, { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import picture from "../assets/tulisanCariKuliner.png";
-import profilePhoto from "../assets/Annoyed.jpeg";
+import instance from "../api/api";
 
 const MobileNav = () => {
   const [showNavbar, setShowNavbar] = useState(false);
   const navbarRef = useRef(null);
+
+  const [dataProfile, setDataProfile] = useState({});
+  
+  const userName = localStorage.getItem("name");
+  const user_id = localStorage.getItem("user_id");
+
+  useEffect(() => {
+    const getData = () => {
+      let config = {
+        method: 'post',
+        maxBodyLength: Infinity,
+        url: `/read_profile/${user_id}`,
+        headers: {
+          Authorization : `Bearer ${localStorage.getItem('token')}`,
+        }
+      }
+
+      instance
+        .request(config)
+        .then((response) => {
+          setDataProfile(response.data.data)
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    }
+    getData()
+  }, [user_id])
 
   const handleClickNavbar = () => {
     setShowNavbar(true);
@@ -25,8 +53,6 @@ const MobileNav = () => {
     };
   }, []);
 
-  const userName = localStorage.getItem("name");
-  const user_id = localStorage.getItem("user_id");
 
   return (
     <>
@@ -37,7 +63,7 @@ const MobileNav = () => {
         <div
           onClick={handleClickNavbar}
           style={{
-            backgroundImage: `url(${profilePhoto})`,
+            backgroundImage: `url(${dataProfile.photo})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
           }}

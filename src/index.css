@@ -23,6 +23,7 @@ video {
   filter: brightness(0.6);
 }
 
+/* loading */
 .loader {
   display: inline-block;
 }
@@ -97,7 +98,37 @@ video {
   }
 }
   
+/* Loading Button */
+.load {
+  border: 2px solid white;
+  border-left-color: transparent;
+  border-radius: 50%;
+}
 
+.load {
+  border: 2px solid white;
+  border-left-color: transparent;
+  width: 20px;
+  height: 20px;
+}
+
+.load {
+  border: 2px solid white;
+  border-left-color: transparent;
+  width: 20px;
+  height: 20px;
+  animation: spin89345 1s linear infinite;
+}
+
+@keyframes spin89345 {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
 
 
@@ -159,6 +190,11 @@ video {
     width: 7%;
   }
 
+  /* Add Food */
+  #add-food {
+    padding-left: 10%;
+  }
+
   /* Detail Food */
 
   #detail-sm-image {
@@ -175,44 +211,6 @@ video {
     display: inline;
   }
 
-  /* Add Food */
-  #add-food {
-    height: 100%;
-    width:100%;
-  }
-
-  #add-food-parent {
-    padding-left: 10%;
-  }
-
-  #add-food-left {
-    display: none;
-  }
-
-  #add-food-right {
-    width: 100%;
-  }
-
-  #add-food-text {
-    display: inline;
-    font-size: xx-large;
-    font-weight: bold;
-    color: white;
-    width: 100%;
-    margin-left: 3%;
-  }
-
-  #add-food-page, #edit-food-page {
-    height: 100%;
-  }
-
-  #add-photo-responsive {
-    height: 300px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
 
   @keyframes rotate {
     0% {
@@ -234,22 +232,6 @@ video {
     height: 100%;
   }
 
-  /* Edit Food */
-  #edit-food-left {
-    display: none;
-  }
-
-  #edit-food-right {
-    width: 100%;
-  }
-
-  #edit-food-text {
-    width: 100%;
-    gap: 5%;
-    display: flex;
-    justify-items: center;
-  }
-
   /* Profile */
   #profile {
     padding-left: 10%;
@@ -257,6 +239,10 @@ video {
 
   #profile-button {
     margin-bottom: 150px;
+  }
+
+  #profile-img, #profile-img-change {
+    padding: 50px;
   }
 
 }
@@ -354,45 +340,43 @@ video {
   #profile {
     padding-top: 70px;
     padding-left: 0;
+    display: flex;
   }
 
-  #profile-card {
-    padding: 20px;
-  }
-
-  #add-food-parent {
-    padding-top: 70px;
-    padding-left: 0;
+  #profile-img, #profile-img-change {
+    padding: 25px;
   }
 
   #add-food {
+    padding: 0;
+    padding-top: 90px;
+  }
+
+  #add-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-bottom: 90px;
+  }
+
+  #form-parent, #form-children {
     width: 100%;
-    height: 100%;
-    border-radius: 0;
-    background-color: #292929;
   }
 
-  #add-food-page, #edit-food-page {
-    height: 100%;
+  #form-parent {
+    display: flex;
+    flex-direction: column-reverse;
   }
 
-  #input-food {
-    background-color: #121212;
+  #edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    padding-bottom: 90px;
   }
 
-  #add-photo-responsive {
-    height: 250px;
-  }
-
-  #edit-food-parent {
-    padding-top: 10px;
-  }
-
-  #edit-food {
-    width: 100%;
-    height: 100%;
-    border-radius: 0;
-    background-color: #292929;
+  #edit-photo {
+    height: 200px;
   }
 
   #detail {
@@ -448,5 +432,10 @@ video {
     height: 10%;
   }
  
+  #logout {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+  }
 
 }

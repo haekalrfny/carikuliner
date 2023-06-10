@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Bio from "./pages/Bio";
 import LogoutButton from "./pages/Logout";
 import AddFood from "./pages/AddFood";
 import DetailFood from "./pages/DetailFood";
@@ -23,7 +22,6 @@ const App = () => {
           <Route path="/update/:id" element={<EditFood />} />
           <Route path="/detail/:id" element={<DetailFood />} />
           <Route path='/logout' element={<LogoutButton />} />
-          <Route path='/updatebio' element={<Bio/>} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate, useParams } from "react-router-dom";
-import { AiFillLike } from "react-icons/ai";
+import { IoHeart } from "react-icons/io5";
 import backIcon from "../assets/angle-left.png";
 import infoIcon from "../assets/menu-dots-vertical.png";
 import cancelIcon from "../assets/cross-small.png";
@@ -9,11 +9,13 @@ import instance from "../api/api";
 const DetailFood = () => {
   const { id } = useParams();
 
-  const [data, setData] = useState(null);
-
-  const [info, setInfo] = useState(false);
+  const [data, setData] = useState('');
   const [isLiked, setIsLiked] = useState(false);
+  const [info, setInfo] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const user_id = localStorage.getItem('user_id')
+  const role = localStorage.getItem('role')
 
   const navigate = useNavigate();
 
@@ -118,13 +120,13 @@ const DetailFood = () => {
                 >
                   <img className="w-[25px] h-[25px]" src={backIcon} alt="" />
                 </NavLink>
-                <NavLink
+                {data.user_id == user_id || role == 1 ? (<NavLink
                   id="icon-info"
                   onClick={() => setInfo(true)}
                   className="w-[50px] h-[50px] bg-[#292929] rounded-full flex justify-center items-center"
                 >
                   <img className="w-[25px] h-[25px]" src={infoIcon} alt="" />
-                </NavLink>
+                </NavLink>): null}
               </div>
               <div
                 id="detail-img"
@@ -160,7 +162,7 @@ const DetailFood = () => {
               <div id="detail-1" className="w-full h-[10%] flex flex-col">
                 <h1
                   id="detail-title"
-                  className="text-5xl text-[#f15e3c] font-bold"
+                  className="text-4xl text-[#f15e3c] font-bold mb-1"
                 >
                   {data.nama_kuliner}
                 </h1>
@@ -169,7 +171,7 @@ const DetailFood = () => {
               <div id="detail-2" className="w-full h-[80%]">
                 <h1
                   id="detail-2-h1"
-                  className="text-[#f15e3c] h-[6%] text-xl font-bold "
+                  className="text-[#f15e3c] h-[6%] text-lg font-bold "
                 >
                   Deskripsi :
                 </h1>
@@ -185,12 +187,12 @@ const DetailFood = () => {
                   Artikel ditulis oleh
                   <span className="text-[#f15e3c]"> {data.user.name}</span>.
                 </p>
-                <AiFillLike
-                  className={`w-[30px] h-[30px] cursor-pointer ${
-                    isLiked ? "text-[#f15e3c]" : "text-white"
-                  }`}
-                  onClick={handleLikeClick}
-                />
+                <IoHeart
+          className={`w-[30px] h-[30px] cursor-pointer ${
+            isLiked ? "text-red-500" : "text-gray-400"
+          }`}
+          onClick={handleLikeClick}
+        />
               </div>
             </div>
             {info ? (
@@ -209,13 +211,13 @@ const DetailFood = () => {
                   <div className="flex flex-col gap-4">
                     <NavLink
                       to={`/update/${data.id}`}
-                      className="bg-[#f15e3c] border border-[#f15e3c] rounded-full flex justify-center items-center px-5 py-2 hover:bg-transparent"
+                      className="bg-[#f15e3c] border border-[#f15e3c] rounded-[20px] flex justify-center items-center px-5 py-2 hover:bg-transparent"
                     >
                       <span className="text-white">Edit</span>
                     </NavLink>
                     <NavLink
                       onClick={() => deleteData(data.id)}
-                      className="bg-[#f15e3c] border border-[#f15e3c] rounded-full flex justify-center items-center px-5 py-2 hover:bg-transparent"
+                      className="bg-[#f15e3c] border border-[#f15e3c] rounded-[20px] flex justify-center items-center px-5 py-2 hover:bg-transparent"
                     >
                       <span className="text-white">Delete</span>
                     </NavLink>

@@ -1,6 +1,6 @@
   import React, { useState } from 'react';
   import { NavLink, useParams } from 'react-router-dom';
-  import { AiFillLike } from 'react-icons/ai';
+  import { IoHeart } from "react-icons/io5";
 
 
   const Card = ({ nama_kuliner, deskripsi, image, detail}) => {
@@ -25,18 +25,20 @@
           <p className="text-xs text-white h-[50%] mb-2 overflow-hidden">
             {deskripsi}
           </p>
-          <div className="flex justify-end h-[25%] gap-2 items-center">
+          <div className="flex justify-between h-[25%] gap-2 items-center">
             <NavLink
               to={detail}
-              className="text-sm px-3 py-2 bg-[#f15e3c] border-[#f15e3c] rounded-full hover:bg-transparent hover:border transition duration-200 text-white font-medium"
+              className="text-sm px-2 py-1 bg-[#f15e3c] border-[#f15e3c] rounded-full hover:bg-transparent hover:border transition duration-200 text-white font-medium"
             >
-              Lihat Detail
+              Lihat detail
             </NavLink>
             <div>
-              <AiFillLike
-                className={`w-[25px] h-[25px] cursor-pointer ${isLiked ? 'text-[#f15e3c]' : 'text-white'}`}
-                onClick={handleLikeClick}
-              />
+            <IoHeart
+          className={`w-[30px] h-[30px] cursor-pointer ${
+            isLiked ? "text-red-500" : "text-gray-400"
+          }`}
+          onClick={handleLikeClick}
+        />
             </div>
           </div>
         </div>

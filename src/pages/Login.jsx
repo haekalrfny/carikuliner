@@ -7,6 +7,8 @@ import passwordIcon from "../assets/lock.png";
 import Input from "../component/Input";
 import Button from "../component/Button";
 import instance from "../api/api";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -20,7 +22,7 @@ const Login = () => {
     if (email === "" && password === "") {
       return false;
     }
-
+    
     let data = new FormData();
     data.append("email", email);
     data.append("password", password);
@@ -39,13 +41,43 @@ const Login = () => {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("name", response.data.user.name);
         localStorage.setItem('user_id', response.data.user.id)
-        navigate("/home");
+        localStorage.setItem('role', response.data.user.is_admin)
+        notifySuccess()
+        setTimeout(() => {
+          navigate('/home')
+        }, 2000)
       })
       .catch((error) => {
-        alert('Email atau Password belum terdaftar')
+        notifyWarning()
         console.log(error);
       });
   };
+
+  const notifySuccess = () => {
+    toast.success('Login Berhasil', {
+      position: "top-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      });
+  }
+
+  const notifyWarning = () => {
+    toast.error('Email atau Password Salah', {
+      position: "top-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      });
+  }
 
   return (
     <div className="w-full h-screen flex justify-center items-center">
@@ -118,6 +150,18 @@ const Login = () => {
           </p>
         </form>
       </div>
+      <ToastContainer
+position="top-right"
+autoClose={1000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="dark"
+/>
     </div>
   );
 };

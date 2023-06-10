@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import picture from "../assets/tulisanCariKuliner.png";
 import homeIcon from "../assets/home (3).png";
 import addIcon from "../assets/add.png";

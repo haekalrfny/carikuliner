@@ -8,6 +8,8 @@ import passwordIcon from "../assets/lock.png";
 import Input from "../component/Input";
 import Button from "../component/Button";
 import instance from "../api/api";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const Register = () => {
@@ -47,13 +49,42 @@ const Register = () => {
     instance
       .request(config)
       .then((response) => {
-        navigate("/");
+        notifySuccess()
+        setTimeout(() => {
+          navigate('/')
+        }, 2000)
       })
       .catch((error) => {
+        notifyWarning()
         console.log(error);
-        alert("Email atau Password sudah dipakai");
       });
   };
+
+  const notifySuccess = () => {
+    toast.success('Register berhasil', {
+      position: "top-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      });
+  }
+
+  const notifyWarning = () => {
+    toast.error('Email sudah dipakai', {
+      position: "top-right",
+      autoClose: 1000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      });
+  }
 
   return (
     <div>
@@ -142,6 +173,18 @@ const Register = () => {
           </form>
         </div>
       </div>
+      <ToastContainer
+position="top-right"
+autoClose={1000}
+hideProgressBar={false}
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+theme="dark"
+/>
     </div>
   );
 };
