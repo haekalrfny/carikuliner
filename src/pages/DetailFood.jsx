@@ -12,9 +12,11 @@ const DetailFood = () => {
   const { id } = useParams();
 
   const [data, setData] = useState("");
+  const [dataLike, setDataLike] = useState("");
   const [isLiked, setIsLiked] = useState(false);
   const [info, setInfo] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const user_id = localStorage.getItem("user_id");
   const role = localStorage.getItem("role");
@@ -56,6 +58,113 @@ const DetailFood = () => {
     getData();
   }, []);
 
+  useEffect(() => {
+    setLoading(true);
+    const getData = () => {
+      let config = {
+        method: "post",
+        url: `/countLike/${id}`,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      };
+
+      instance
+        .request(config)
+        .then((response) => {
+          setLoading(false);
+          setDataLike(response.data.count);
+          console.log(response.data.count);
+        })
+        .catch((error) => {
+          setLoading(false);
+          console.log(error);
+        });
+    };
+    getData();
+  }, []);
+
+  const createLikes = () => {
+    let config = {
+      method: "post",
+      url: `/createLike/${id}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+  
+    instance
+      .request(config)
+      .then((response) => {
+        setIsLiked(true);
+        console.log(response.data.status);
+        getData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  
+  const deleteLikes = () => {
+    let config = {
+      method: "post",
+      url: `/deleteLike/${id}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+  
+    instance
+      .request(config)
+      .then((response) => {
+        setIsLiked(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  
+
+  const handleLikes = () => {
+    if (isLiked) {
+      setIsAnimating(true); // Mengaktifkan animasi
+
+      setTimeout(() => {
+        deleteLikes(id);
+        setIsAnimating(false); // Menonaktifkan animasi setelah penundaan
+      }, 1000); // Penundaan selama 1 detik sebelum memperbarui status isLiked
+      
+    } else {
+      setIsAnimating(true); // Mengaktifkan animasi
+
+      setTimeout(() => {
+        createLikes();
+        setIsAnimating(false); // Menonaktifkan animasi setelah penundaan
+      }, 1000); // Penundaan selama 1 detik sebelum memperbarui status isLiked
+    }
+  };
+
+  const getData = () => {
+    let config = {
+      method: "post",
+      url: `/read/${id}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+
+    instance
+      .request(config)
+      .then((response) => {
+        setLoading(false);
+        setData(response.data.data.kuliner);
+      })
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
+      });
+  };
+
   const deleteData = (id) => {
     setLoading(true);
     let config = {
@@ -74,18 +183,14 @@ const DetailFood = () => {
         setData(newData);
         notifySuccess();
         setTimeout(() => {
-          navigate('/home')
-        }, 2000)
+          navigate("/home");
+        }, 2000);
       })
       .catch((error) => {
         setLoading(false);
         notifyWarning();
         console.log(error);
       });
-  };
-
-  const handleLikeClick = () => {
-    setIsLiked(!isLiked);
   };
 
   const notifySuccess = () => {
@@ -117,15 +222,15 @@ const DetailFood = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-      <div className="loader">
-        <div className="orbe" style={{ "--index": 0 }}></div>
-        <div className="orbe" style={{ "--index": 1 }}></div>
-        <div className="orbe" style={{ "--index": 2 }}></div>
-        <div className="orbe" style={{ "--index": 3 }}></div>
-        <div className="orbe" style={{ "--index": 4 }}></div>
+        <div className="loader">
+          <div className="orbe" style={{ "--index": 0 }}></div>
+          <div className="orbe" style={{ "--index": 1 }}></div>
+          <div className="orbe" style={{ "--index": 2 }}></div>
+          <div className="orbe" style={{ "--index": 3 }}></div>
+          <div className="orbe" style={{ "--index": 4 }}></div>
+        </div>
       </div>
-    </div>
-    )
+    );
   } else {
     return (
       <>
@@ -191,9 +296,9 @@ const DetailFood = () => {
             </div>
             <div
               id="detail-right"
-              className="w-[40%] h-screen rounded-l-[20px] bg-[rgba(0,0,0,0.5)] backdrop-blur-md flex flex-col gap-5 items-center py-10 px-7"
+              className="w-[40%] h-screen bg-[rgba(0,0,0,0.5)] backdrop-blur-md flex flex-col gap-3  items-center py-10 px-7 overflow-auto"
             >
-              <div id="detail-1" className="w-full h-[10%] flex flex-col">
+              <div id="detail-1" className="w-full flex flex-col">
                 <h1
                   id="detail-title"
                   className="text-4xl text-[#f15e3c] font-bold"
@@ -202,31 +307,41 @@ const DetailFood = () => {
                 </h1>
                 <h2 className="text-white text-xl">{data.daerah}</h2>
               </div>
-              <div id="detail-2" className="w-full h-[80%]">
+              <div id="detail-2" className="w-full">
                 <h1
                   id="detail-2-h1"
-                  className="text-[#f15e3c] h-[6%] text-lg font-bold "
+                  className="text-[#f15e3c] text-lg font-bold "
                 >
                   Deskripsi :
                 </h1>
-                <div id="detail-2-p" className="overflow-y-auto h-[94%]">
+                <div id="detail-2-p" className="overflow-y-auto ">
                   <p className="text-white text-justify">{data.deskripsi}</p>
                 </div>
               </div>
               <div
                 id="detail-3"
-                className="flex items-center justify-between w-full h-[10%]"
+                className="flex items-center justify-between w-full"
               >
-                <p className="text-white">
-                  Artikel ditulis oleh
-                  <span className="text-[#f15e3c]"> {data.user.name}</span>.
-                </p>
-                <IoHeart
-                  className={`w-[30px] h-[30px] cursor-pointer ${
-                    isLiked ? "text-red-500" : "text-gray-400"
-                  }`}
-                  onClick={handleLikeClick}
-                />
+                <div>
+                  <p className="text-white ">
+                    Artikel ditulis oleh
+                    <span className="text-[#f15e3c]"> {data.user.name}</span>
+                  </p>
+                </div>
+                <div className="flex items-center gap-1">
+                  <IoHeart
+                    className={`w-[25px] h-[25px] cursor-pointer ${
+                      isLiked ? "text-red-500" : "text-gray-400"
+                    } ${isAnimating ? "animate-heart" : ""}`}
+                    onClick={handleLikes}
+                  />
+
+                  {dataLike ? (
+                    <p className="text-white text-[14px]">{dataLike} likes</p>
+                  ) : (
+                      <p className="text-white text-[14px]">{dataLike} likes</p>
+                  )}
+                </div>
               </div>
             </div>
             {info ? (
@@ -240,7 +355,11 @@ const DetailFood = () => {
                     onClick={() => setInfo(false)}
                     className="absolute top-0 right-0 bg-[#292929] w-[30px] h-[30px] m-2 rounded-full flex items-center justify-center"
                   >
-                    <img src={cancelIcon} alt="" className="w-[15px] h-[15px]" />
+                    <img
+                      src={cancelIcon}
+                      alt=""
+                      className="w-[15px] h-[15px]"
+                    />
                   </NavLink>
                   <div className="flex flex-col gap-4">
                     <NavLink
@@ -253,11 +372,7 @@ const DetailFood = () => {
                       onClick={() => deleteData(data.id)}
                       className="bg-[#f15e3c] border border-[#f15e3c] rounded-[20px] flex justify-center items-center px-5 py-2 hover:bg-transparent"
                     >
-                      {loading ? (
-                        <div className="load"></div>
-                      ) : (
-                        <span className="text-white">Delete</span>
-                      )}
+                      <span className="text-white">Hapus</span>
                     </NavLink>
                   </div>
                 </div>
@@ -265,23 +380,10 @@ const DetailFood = () => {
             ) : null}
           </div>
         )}
-        <ToastContainer
-          position="top-right"
-          autoClose={1000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="dark"
-        />
+        <ToastContainer />
       </>
     );
   }
-
-  
 };
 
 export default DetailFood;

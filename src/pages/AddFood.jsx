@@ -138,7 +138,7 @@ const AddFood = () => {
               >
                 {photo ? (
                   <img
-                    className="w-full bg-center rounded-[12px] hover:opacity-70"
+                    className="w-full bg-center rounded-[20px] hover:opacity-70"
                     src={photo}
                     alt={nama_kuliner}
                     onClick={() => {
@@ -150,7 +150,7 @@ const AddFood = () => {
                     onClick={() => {
                       document.querySelector("#input-file").click();
                     }}
-                    className="w-full h-full flex justify-center items-center flex-col cursor-pointer rounded-[12px] bg-[#121212] hover:bg-[#000000]"
+                    className="w-full h-full flex justify-center items-center flex-col cursor-pointer rounded-[20px] bg-[#121212] hover:bg-[#000000]"
                   >
                     <span><HiOutlinePhoto className="w-6 h-6 text-gray-400 mb-1" /></span>
                     <p className="text-gray-400">Masukkan Gambar</p>
@@ -175,14 +175,14 @@ const AddFood = () => {
               <label className="text-white text-lg font-medium py-2 pl-1">Deskripsi</label>
               <textarea
                 placeholder="Masukkan Deskripsi"
-                className="w-full rounded-[12px] bg-[#121212] outline-none text-white p-3"
+                className="w-full rounded-[20px] bg-[#121212] outline-none text-white p-3"
                 value={deskripsi}
                 onChange={(e) => setDeskripsi(e.target.value)}
                 rows={10}
               ></textarea>
             </div>
             <div>
-              <button className="w-full mt-5 h-10 rounded-[12px] bg-[#f15e3c] hover:bg-transparent hover:border border-[#f15e3c] flex justify-center items-center">
+              <button className="w-full mt-5 h-10 rounded-[20px] bg-[#f15e3c] hover:bg-transparent hover:border border-[#f15e3c] flex justify-center items-center">
                 {loading ? (
                   <div className="load"></div>
                 ) : (

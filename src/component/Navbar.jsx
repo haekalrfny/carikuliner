@@ -4,6 +4,7 @@ import picture from "../assets/tulisanCariKuliner.png";
 import homeIcon from "../assets/home (3).png";
 import addIcon from "../assets/add.png";
 import userIcon from "../assets/user (2).png";
+import aboutIcon from '../assets/info.png'
 import logoutIcon from "../assets/sign-out-alt.png";
 
 const Navbar = () => {
@@ -17,7 +18,7 @@ const Navbar = () => {
   }
 
   return (
-    <div id="navbar" className="w-[270px] h-full fixed bg-[#121212] flex flex-col rounded-r-[12px]">
+    <div id="navbar" className="w-[270px] h-full fixed bg-[#121212] flex flex-col">
       <div className="w-full h-[10%] flex items-end justify-center">
         <img className="w-[50%]" src={picture} alt="" />
       </div>
@@ -49,8 +50,16 @@ const Navbar = () => {
             <img src={userIcon} alt="" />
             <h1 className="text-white text-base font-semibold">Profil</h1>
           </NavLink>
+         
         </div>
-        <div className="w-full px-[10%]">
+        <div className="w-full px-[10%] flex flex-col gap-4">
+        <NavLink
+            to="/aboutUs"
+            className={active}
+          >
+            <img src={aboutIcon} alt="" />
+            <h1 className="text-white text-base font-semibold">Tentang kami</h1>
+          </NavLink>  
           <NavLink
             to='/logout'
             className='flex px-3 p-2 gap-5 items-center hover:bg-[#f15e3c] rounded-full transition duration-200'

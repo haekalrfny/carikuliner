@@ -10,6 +10,7 @@ const EditFood = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [loadingButton, setLoadingButton] = useState(false)
 
   const [photo, setPhoto] = useState(null);
   const [nama_kuliner, setNama_kuliner] = useState("");
@@ -68,7 +69,7 @@ const EditFood = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setLoading(true);
+    setLoadingButton(true);
 
     let data = new FormData();
     data.append("nama_kuliner", nama_kuliner);
@@ -89,14 +90,14 @@ const EditFood = () => {
     instance
       .request(config)
       .then((response) => {
-        setLoading(false);
+        setLoadingButton(false);
         notifySuccess();
         setTimeout(() => {
           navigate("/home");
         }, 2000);
       })
       .catch((error) => {
-        setLoading(false);
+        setLoadingButton(false);
         notifyWarning();
         console.log(error);
       });
@@ -180,7 +181,7 @@ const EditFood = () => {
                 >
                   {photo ? (
                     <img
-                      className="rounded-[12px] w-full bg-center hover:opacity-70"
+                      className="rounded-[20px] w-full bg-center hover:opacity-70"
                       src={photo}
                       alt={nama_kuliner}
                       onClick={() => {
@@ -192,7 +193,7 @@ const EditFood = () => {
                       onClick={() => {
                         document.querySelector("#input-file").click();
                       }}
-                      className="w-full h-full cursor-pointer rounded-[12px]"
+                      className="w-full h-full cursor-pointer rounded-[20px]"
                     ></div>
                   )}
                   <input
@@ -222,15 +223,15 @@ const EditFood = () => {
                 </label>
                 <textarea
                   placeholder="Masukkan Deskripsi"
-                  className="w-full rounded-[12px] bg-[#121212] outline-none text-white p-3"
+                  className="w-full rounded-[20px] bg-[#121212] outline-none text-white p-3"
                   value={deskripsi}
                   onChange={(e) => setDeskripsi(e.target.value)}
                   rows={13}
                 ></textarea>
               </div>
               <div>
-                <button className="w-full mt-5 h-10 rounded-[12px] bg-[#f15e3c] hover:bg-transparent hover:border border-[#f15e3c] flex justify-center items-center">
-                  {loading ? (
+                <button className="w-full mt-5 h-10 rounded-[20px] bg-[#f15e3c] hover:bg-transparent hover:border border-[#f15e3c] flex justify-center items-center">
+                  {loadingButton ? (
                     <div class="load"></div>
                   ) : (
                     <p className="text-white text-sm ">Ubah</p>

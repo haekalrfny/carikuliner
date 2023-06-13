@@ -109,8 +109,8 @@ const Login = () => {
           onSubmit={handleSubmit}
           className="w-[45%] h-full rounded-3xl bg-[#292929] shadow-[20px_20px_50px_rgba(0,0,0,0.5)] flex flex-col items-center justify-center px-10 gap-2"
         >
-          <div className="w-full">
-            <h1 className="font-bold text-white text-[30px]">
+          <div className="w-full pl-2">
+            <h1 className="font-bold text-white text-[25px]">
               Halo, Selamat datang kembali!
             </h1>
             <p className="text-[#f15e3c] text-[13px]">
@@ -118,7 +118,7 @@ const Login = () => {
             </p>
           </div>
           <div className="w-full flex flex-col gap-2">
-            <label className="text-gray-400 text-[15px]" htmlFor="">
+            <label className="text-gray-400 text-[15px] pl-2" htmlFor="">
               Email
             </label>
             <Input
@@ -128,7 +128,7 @@ const Login = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-            <label className="text-gray-400 text-[15px]" htmlFor="">
+            <label className="text-gray-400 text-[15px] pl-2" htmlFor="">
               Password
             </label>
             <Input
@@ -139,7 +139,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
-          <div className="w-full pt-4">
+          <div className="w-full pt-3">
             <Button text="Masuk" />
           </div>
           <p className="text-white text-sm w-full">

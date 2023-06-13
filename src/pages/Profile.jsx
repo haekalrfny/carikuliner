@@ -5,8 +5,8 @@ import Card from "../component/Card";
 import MobileNav from "../component/MobileNav";
 import Navbar from "../component/Navbar";
 import ResponsiveNav from "../component/ResponsiveNav";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ const Profile = () => {
   const [profilePic, setProfilePic] = useState(false);
   const [profileBio, setProfileBio] = useState(false);
   const [dataProfile, setDataProfile] = useState({});
-  const [dataBio, setDataBio] = useState('')
+  const [dataBio, setDataBio] = useState("");
   const [photo, setPhoto] = useState(null);
   const [bio, setBio] = useState(null);
   const [image, setImage] = useState(null);
@@ -106,12 +106,12 @@ const Profile = () => {
       .then((response) => {
         setLoading(false);
         setProfilePic(false);
-        notifySuccess()
+        notifySuccess();
         window.location.reload();
       })
       .catch((error) => {
         setLoading(false);
-        notifyWarning()
+        notifyWarning();
         console.log(error);
       });
   };
@@ -138,13 +138,12 @@ const Profile = () => {
       .then((response) => {
         setLoading(false);
         setProfileBio(false);
-        notifySuccess()
+        notifySuccess();
         window.location.reload();
-
       })
       .catch((error) => {
         setLoading(false);
-        notifyWarning()
+        notifyWarning();
         console.log(error);
       });
   };
@@ -173,7 +172,7 @@ const Profile = () => {
   };
 
   const notifySuccess = () => {
-    toast.success('Data diubah', {
+    toast.success("Data diubah", {
       position: "top-right",
       autoClose: 1000,
       hideProgressBar: false,
@@ -186,7 +185,7 @@ const Profile = () => {
   };
 
   const notifyWarning = () => {
-    toast.error('Error', {
+    toast.error("Error", {
       position: "top-right",
       autoClose: 1000,
       hideProgressBar: false,
@@ -201,14 +200,14 @@ const Profile = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen">
-      <div className="loader">
-        <div className="orbe" style={{ "--index": 0 }}></div>
-        <div className="orbe" style={{ "--index": 1 }}></div>
-        <div className="orbe" style={{ "--index": 2 }}></div>
-        <div className="orbe" style={{ "--index": 3 }}></div>
-        <div className="orbe" style={{ "--index": 4 }}></div>
+        <div className="loader">
+          <div className="orbe" style={{ "--index": 0 }}></div>
+          <div className="orbe" style={{ "--index": 1 }}></div>
+          <div className="orbe" style={{ "--index": 2 }}></div>
+          <div className="orbe" style={{ "--index": 3 }}></div>
+          <div className="orbe" style={{ "--index": 4 }}></div>
+        </div>
       </div>
-    </div>
     );
   } else {
     return (
@@ -232,8 +231,8 @@ const Profile = () => {
               <div
                 onClick={handleProfilePicClick}
                 style={{
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
                   backgroundImage: `url(${dataProfile.photo})`,
                 }}
                 className="w-[70px] h-[70px] rounded-full mr-4 cursor-pointer hover:opacity-50"
@@ -251,7 +250,7 @@ const Profile = () => {
             <p className="mt-4 text-white">{dataProfile.bio}</p>
             <button
               onClick={handleProfileBioClick}
-              className="text-sm mt-3 bg-[#f15e3c] hover:bg-transparent border border-[#f15e3c] text-white py-1 px-3 rounded-full"
+              className="text-sm mt-3 bg-[#f15e3c] hover:bg-transparent border border-[#f15e3c] text-white py-1 px-3 rounded-[20px]"
             >
               Ubah Bio
             </button>
@@ -259,32 +258,33 @@ const Profile = () => {
           <div className="w-[95%] flex flex-col gap-6 justify-center items-center pb-[100px]">
             <h1 className="w-full text-white font-bold text-3xl">Koleksi</h1>
             <div className="w-full flex flex-wrap justify-start gap-5">
-              {data
-                .slice()
-                .sort((a, b) => b.id - a.id)
-                .map((item) => {
-                  return (
-                    <Card
-                      key={item.id}
-                      nama_kuliner={item.nama_kuliner}
-                      deskripsi={item.deskripsi}
-                      image={item.image}
-                      detail={`/detail/${item.id}`}
-                    />
-                  );
-                })}
+              {data.length === 0 ? (
+                <div className="w-full flex justify-center py-[13%]">
+                  <p className="text-gray-400">kuliner tidak ada</p>
+                </div>
+              ) : (
+                data
+                  .slice()
+                  .sort((a, b) => b.id - a.id)
+                  .map((item) => {
+                    return (
+                      <Card
+                        key={item.id}
+                        nama_kuliner={item.nama_kuliner}
+                        deskripsi={item.deskripsi}
+                        image={item.image}
+                        detail={`/detail/${item.id}`}
+                      />
+                    );
+                  })
+              )}
             </div>
           </div>
         </div>
         {profilePic ? (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80">
             {image ? (
-              <img
-                id="profile-img"
-                src={image}
-                className="p-[500px]"
-                alt=""
-              />
+              <img id="profile-img" src={image} className="p-[500px]" alt="" />
             ) : (
               <img
                 id="profile-img-change"
@@ -338,13 +338,21 @@ const Profile = () => {
 
         {profileBio ? (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80">
-            <div className="w-[500px] bg-[#121212] rounded-[20px] flex flex-col gap-2 p-[15px]">
-              <h1 className="text-[#f15e3c] text-xl">Ubah Bio</h1>
-              <textarea row={13} onChange={(e) => setBio(e.target.value)} placeholder={dataProfile.bio} className="w-full bg-[#121212] outline-none text-white text-xs">
-
-              </textarea>
+            <div className="w-[500px] h-[400px] bg-[#121212] rounded-[20px] flex flex-col justify-between p-[15px]">
+              <div>
+                <h1 className="text-[#f15e3c] text-xl">Ubah Bio</h1>
+                <textarea
+                  row={13}
+                  onChange={(e) => setBio(e.target.value)}
+                  placeholder={dataProfile.bio}
+                  className="w-full h-[300px] bg-[#121212] outline-none text-white text-xs"
+                ></textarea>
+              </div>
               <div className="w-full flex justify-end">
-                <button onClick={handleBio} className=" text-white border border-[#f15e3c] bg-[#f15e3c] py-1 px-3  text-sm rounded-full hover:bg-transparent">
+                <button
+                  onClick={handleBio}
+                  className=" text-white border border-[#f15e3c] bg-[#f15e3c] py-1 px-3  text-sm rounded-full hover:bg-transparent"
+                >
                   Ubah bio
                 </button>
               </div>
@@ -368,18 +376,18 @@ const Profile = () => {
             </button>
           </div>
         ) : null}
-         <ToastContainer
-        position="top-right"
-        autoClose={1000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
+        <ToastContainer
+          position="top-right"
+          autoClose={1000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
       </div>
     );
   }

@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Register from "./pages/Register";
+import AbousUs from "./pages/AbousUs";
 
 const App = () => {
 
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/update/:id" element={<EditFood />} />
           <Route path="/detail/:id" element={<DetailFood />} />
           <Route path='/logout' element={<LogoutButton />} />
+          <Route path='/aboutUs' element={<AbousUs/>} />
         </Routes>
       </BrowserRouter>
     </div>

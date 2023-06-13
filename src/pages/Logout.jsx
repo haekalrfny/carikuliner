@@ -25,7 +25,7 @@ const LogoutButton = () => {
 
   return (
     <div className="w-full h-screen flex justify-center items-center">
-      <div id="logout" className="w-[300px] h-[350px] bg-[#121212] rounded-[12px] flex flex-col justify-center p-7 gap-3">
+      <div id="logout" className="w-[300px] h-[350px] bg-[#121212] rounded-[20px] flex flex-col justify-center p-7 gap-3">
         <div className="w-full flex justify-center">
           <img className="w-[50px]" src={logo} alt="" />
         </div>
@@ -41,12 +41,12 @@ const LogoutButton = () => {
         <div className="w-full flex flex-col gap-3">
           <button
             onClick={handleLogout}  
-            className="w-full text-white text-sm font-semibold py-[8px] bg-[#f15e3c] rounded-[12px] hover:bg-transparent border border-[#f15e3c]"
+            className="w-full text-white text-sm font-semibold py-[8px] bg-[#f15e3c] rounded-[20px] hover:bg-transparent border border-[#f15e3c]"
           >
             Keluar
           </button>
           <NavLink to='/home'>
-            <button className="w-full text-white text-sm font-semibold py-[8px] hover:bg-[#161616] border border-[#f15e3c] rounded-[12px]">
+            <button className="w-full text-white text-sm font-semibold py-[8px] hover:bg-[#161616] border border-[#f15e3c] rounded-[20px]">
               Batal
             </button>
           </NavLink>

@@ -57,15 +57,15 @@ const Home = () => {
   useEffect(() => {
     const results = data.filter((item) =>
       item.nama_kuliner.toLowerCase().includes(searchQuery.toLowerCase())
-    )
+    );
     setSearchResult(results);
   }, [searchQuery, data]);
 
   const loadMoreCards = () => {
     setVisibleCards((prevVisibleCards) => {
       const newVisibleCards = prevVisibleCards + 6;
-      if (newVisibleCards >= searchResult.length) {
-        document.getElementById("load-more").style.display = "none";
+      if (newVisibleCards >= searchResult.length && searchResult.length < 6) {
+        return searchResult.length;
       }
       return newVisibleCards;
     });
@@ -82,7 +82,7 @@ const Home = () => {
           <div className="orbe" style={{ "--index": 4 }}></div>
         </div>
       </div>
-    )
+    );
   } else {
     return (
       <>
@@ -141,14 +141,16 @@ const Home = () => {
                         );
                       })}
                   </div>
-                  <div id="load-more" className="w-full flex justify-center">
-                    <button
-                      className="text-white bg-[#f15e3c] border border-[#f15e3c] rounded-full hover:bg-transparent text-sm py-1 px-3 mt-4"
-                      onClick={loadMoreCards}
-                    >
-                      Load More
-                    </button>
-                  </div>
+                  {searchResult.length > visibleCards && (
+                    <div id="load-more" className="w-full flex justify-center">
+                      <button
+                        className="text-white bg-[#f15e3c] border border-[#f15e3c] rounded-full hover:bg-transparent text-sm py-1 px-3 mt-4"
+                        onClick={loadMoreCards}
+                      >
+                        Load More
+                      </button>
+                    </div>
+                  )}
                 </>
               ) : (
                 <div>

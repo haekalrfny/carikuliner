@@ -92,6 +92,12 @@ const MobileNav = () => {
             Profile
           </NavLink>
           <NavLink
+            to="/aboutUs"
+            className="p-2 w-full text-white hover:bg-[#f15e3c] transition-colors"
+          >
+            Tentang kami
+          </NavLink>
+          <NavLink
             to="/logout"
             className="p-2 w-full text-white hover:bg-[#f15e3c] transition-colors"
           >
