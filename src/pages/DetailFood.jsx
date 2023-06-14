@@ -5,8 +5,6 @@ import backIcon from "../assets/angle-left.png";
 import infoIcon from "../assets/menu-dots-vertical.png";
 import cancelIcon from "../assets/cross-small.png";
 import instance from "../api/api";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const DetailFood = () => {
   const { id } = useParams();
@@ -118,6 +116,7 @@ const DetailFood = () => {
       .request(config)
       .then((response) => {
         setIsLiked(false);
+        console.log(response.data.status);
       })
       .catch((error) => {
         console.log(error);
@@ -181,42 +180,12 @@ const DetailFood = () => {
         setLoading(false);
         const newData = data && data.id !== id;
         setData(newData);
-        notifySuccess();
-        setTimeout(() => {
           navigate("/home");
-        }, 2000);
       })
       .catch((error) => {
         setLoading(false);
-        notifyWarning();
         console.log(error);
       });
-  };
-
-  const notifySuccess = () => {
-    toast.error("Kuliner dihapus", {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
-
-  const notifyWarning = () => {
-    toast.error("Error", {
-      position: "top-right",
-      autoClose: 1000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
   };
 
   if (loading) {
@@ -380,7 +349,6 @@ const DetailFood = () => {
             ) : null}
           </div>
         )}
-        <ToastContainer />
       </>
     );
   }

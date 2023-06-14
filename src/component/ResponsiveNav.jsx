@@ -19,7 +19,7 @@ const ResponsiveNav = () => {
   return (
     <div
       id="responsive-nav"
-      className="hidden h-[95%] w-[10%] fixed bg-[#121212]"
+      className="hidden h-full w-[10%] fixed bg-[#121212]"
     >
       <div className="h-full w-full flex flex-col justify-around items-center">
         <div className="w-full flex flex-col items-center gap-10">
