@@ -10,11 +10,10 @@ const DetailFood = () => {
   const { id } = useParams();
 
   const [data, setData] = useState("");
-  const [dataLike, setDataLike] = useState("");
-  const [isLiked, setIsLiked] = useState(false);
   const [info, setInfo] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [like, setLike] = useState(false);
+  const [showFullDescription, setShowFullDescription] = useState(false);
 
   const user_id = localStorage.getItem("user_id");
   const role = localStorage.getItem("role");
@@ -33,115 +32,8 @@ const DetailFood = () => {
 
   useEffect(() => {
     setLoading(true);
-    const getData = () => {
-      let config = {
-        method: "post",
-        url: `/read/${id}`,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      };
-
-      instance
-        .request(config)
-        .then((response) => {
-          setLoading(false);
-          setData(response.data.data.kuliner);
-        })
-        .catch((error) => {
-          setLoading(false);
-          console.log(error);
-        });
-    };
     getData();
   }, []);
-
-  useEffect(() => {
-    setLoading(true);
-    const getData = () => {
-      let config = {
-        method: "post",
-        url: `/countLike/${id}`,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      };
-
-      instance
-        .request(config)
-        .then((response) => {
-          setLoading(false);
-          setDataLike(response.data.count);
-          console.log(response.data.count);
-        })
-        .catch((error) => {
-          setLoading(false);
-          console.log(error);
-        });
-    };
-    getData();
-  }, []);
-
-  const createLikes = () => {
-    let config = {
-      method: "post",
-      url: `/createLike/${id}`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
-  
-    instance
-      .request(config)
-      .then((response) => {
-        setIsLiked(true);
-        console.log(response.data.status);
-        getData();
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  
-  const deleteLikes = () => {
-    let config = {
-      method: "post",
-      url: `/deleteLike/${id}`,
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
-  
-    instance
-      .request(config)
-      .then((response) => {
-        setIsLiked(false);
-        console.log(response.data.status);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  
-
-  const handleLikes = () => {
-    if (isLiked) {
-      setIsAnimating(true); // Mengaktifkan animasi
-
-      setTimeout(() => {
-        deleteLikes(id);
-        setIsAnimating(false); // Menonaktifkan animasi setelah penundaan
-      }, 1000); // Penundaan selama 1 detik sebelum memperbarui status isLiked
-      
-    } else {
-      setIsAnimating(true); // Mengaktifkan animasi
-
-      setTimeout(() => {
-        createLikes();
-        setIsAnimating(false); // Menonaktifkan animasi setelah penundaan
-      }, 1000); // Penundaan selama 1 detik sebelum memperbarui status isLiked
-    }
-  };
 
   const getData = () => {
     let config = {
@@ -156,7 +48,8 @@ const DetailFood = () => {
       .request(config)
       .then((response) => {
         setLoading(false);
-        setData(response.data.data.kuliner);
+        setData(response.data.data);
+        setLike(response.data.data.liked);
       })
       .catch((error) => {
         setLoading(false);
@@ -180,13 +73,40 @@ const DetailFood = () => {
         setLoading(false);
         const newData = data && data.id !== id;
         setData(newData);
-          navigate("/home");
+        navigate("/home");
       })
       .catch((error) => {
         setLoading(false);
         console.log(error);
       });
   };
+
+  const handleLike = () => {
+    let config = {
+      method: "post",
+      url: `/kuliner/${id}`,
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+
+    instance
+      .request(config)
+      .then((response) => {
+        console.log(response.data);
+        setLike(response.data.status);
+        getData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const toggleDescription = () => {
+    setShowFullDescription(!showFullDescription);
+  };
+
+  const isDescriptionLong = data && data.kuliner.deskripsi.length > 1100;
 
   if (loading) {
     return (
@@ -208,14 +128,11 @@ const DetailFood = () => {
             id="detail"
             key={data.id}
             style={{
-              backgroundImage: `url(${data.image})`,
+              backgroundImage: `url(${data.kuliner.image})`,
             }}
             className="w-full h-screen bg-[#292929] bg-cover bg-center flex justify-between"
           >
-            <div
-              id="detail-left"
-              className="w-[60%] h-full flex flex-col justify-between"
-            >
+            <div id="detail-left" className="w-[60%] h-full flex flex-col">
               <div
                 id="detail-icon"
                 className="w-full h-[15%] flex items-center justify-between px-[5%]"
@@ -226,7 +143,7 @@ const DetailFood = () => {
                 >
                   <img className="w-[25px] h-[25px]" src={backIcon} alt="" />
                 </NavLink>
-                {data.user_id == user_id || role == 1 ? (
+                {data.kuliner.user_id == user_id || role == 1 ? (
                   <NavLink
                     id="icon-info"
                     onClick={() => setInfo(true)}
@@ -235,32 +152,6 @@ const DetailFood = () => {
                     <img className="w-[25px] h-[25px]" src={infoIcon} alt="" />
                   </NavLink>
                 ) : null}
-              </div>
-              <div
-                id="detail-img"
-                className="w-full h-[20%] flex gap-6 justify-center items-center mb-[8%]"
-              >
-                <div
-                  id="detail-sm-image"
-                  className="w-[170px] h-[170px] bg-top"
-                  style={{
-                    backgroundImage: `url(${data.image})`,
-                  }}
-                ></div>
-                <div
-                  id="detail-sm-image"
-                  className="w-[170px] h-[170px] bg-center"
-                  style={{
-                    backgroundImage: `url(${data.image})`,
-                  }}
-                ></div>
-                <div
-                  id="detail-sm-image"
-                  className="w-[170px] h-[170px] bg-bottom"
-                  style={{
-                    backgroundImage: `url(${data.image})`,
-                  }}
-                ></div>
               </div>
             </div>
             <div
@@ -272,21 +163,33 @@ const DetailFood = () => {
                   id="detail-title"
                   className="text-4xl text-[#f15e3c] font-bold"
                 >
-                  {data.nama_kuliner}
+                  {data.kuliner.nama_kuliner}
                 </h1>
-                <h2 className="text-white text-xl">{data.daerah}</h2>
+                <h2 className="text-white text-xl">{data.kuliner.daerah}</h2>
               </div>
               <div id="detail-2" className="w-full">
-                <h1
-                  id="detail-2-h1"
-                  className="text-[#f15e3c] text-lg font-bold "
-                >
-                  Deskripsi :
-                </h1>
-                <div id="detail-2-p" className="overflow-y-auto ">
-                  <p className="text-white text-justify">{data.deskripsi}</p>
-                </div>
-              </div>
+  <h1
+    id="detail-2-h1"
+    className="text-[#f15e3c] text-lg font-bold "
+  >
+    Deskripsi :
+  </h1>
+  <div id="detail-2-p">
+    <p className="text-white text-justify">
+      {showFullDescription
+        ? data.kuliner.deskripsi
+        : data.kuliner.deskripsi.slice(0, 1100)}
+    {!showFullDescription && isDescriptionLong && (
+      <button
+        className="text-[#f15e3c] text-sm underline"
+        onClick={toggleDescription}
+      >
+        read more
+      </button>
+    )}
+    </p>
+  </div>
+</div>
               <div
                 id="detail-3"
                 className="flex items-center justify-between w-full"
@@ -294,21 +197,30 @@ const DetailFood = () => {
                 <div>
                   <p className="text-white ">
                     Artikel ditulis oleh
-                    <span className="text-[#f15e3c]"> {data.user.name}</span>
+                    <span className="text-[#f15e3c]">
+                      {" "}
+                      {data.kuliner.user.name}
+                    </span>
                   </p>
                 </div>
                 <div className="flex items-center gap-1">
-                  <IoHeart
-                    className={`w-[25px] h-[25px] cursor-pointer ${
-                      isLiked ? "text-red-500" : "text-gray-400"
-                    } ${isAnimating ? "animate-heart" : ""}`}
-                    onClick={handleLikes}
-                  />
-
-                  {dataLike ? (
-                    <p className="text-white text-[14px]">{dataLike} likes</p>
+                  {like ? (
+                    <IoHeart
+                      className="text-red-500 cursor-pointer text-xl"
+                      onClick={handleLike}
+                    />
                   ) : (
-                      <p className="text-white text-[14px]">{dataLike} likes</p>
+                    <IoHeart
+                      className="text-gray-400 cursor-pointer text-xl"
+                      onClick={handleLike}
+                    />
+                  )}
+                  {data.likeTotal === 0 ? (
+                    <p></p>
+                  ) : data.likeTotal === 1 ? (
+                    <p className="text-white">{data.likeTotal} like</p>
+                  ) : (
+                    <p className="text-white">{data.likeTotal} likes</p>
                   )}
                 </div>
               </div>
@@ -332,13 +244,13 @@ const DetailFood = () => {
                   </NavLink>
                   <div className="flex flex-col gap-4">
                     <NavLink
-                      to={`/update/${data.id}`}
+                      to={`/update/${data.kuliner.id}`}
                       className="bg-[#f15e3c] border border-[#f15e3c] rounded-[20px] flex justify-center items-center px-5 py-2 hover:bg-transparent"
                     >
                       <span className="text-white">Edit</span>
                     </NavLink>
                     <NavLink
-                      onClick={() => deleteData(data.id)}
+                      onClick={() => deleteData(data.kuliner.id)}
                       className="bg-[#f15e3c] border border-[#f15e3c] rounded-[20px] flex justify-center items-center px-5 py-2 hover:bg-transparent"
                     >
                       <span className="text-white">Hapus</span>
