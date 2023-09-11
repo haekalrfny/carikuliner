@@ -23,7 +23,7 @@ const App = () => {
           <Route path="/update/:id" element={<EditFood />} />
           <Route path="/detail/:id" element={<DetailFood />} />
           <Route path='/logout' element={<LogoutButton />} />
-          <Route path='/aboutUs' element={<AbousUs/>} />
+          <Route path='/aboutUs' element={<AbousUs />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import InputFood from "../component/InputFood";
-import { HiOutlinePhoto } from 'react-icons/hi2';
+import { HiOutlinePhoto } from "react-icons/hi2";
 import Navbar from "../component/Navbar";
 import ResponsiveNav from "../component/ResponsiveNav";
 import instance from "../api/api";
 import { useNavigate } from "react-router-dom";
 import MobileNav from "../component/MobileNav";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddFood = () => {
   const navigate = useNavigate();
@@ -63,8 +63,8 @@ const AddFood = () => {
         setLoading(false);
         notifySuccess();
         setTimeout(() => {
-          navigate('/home')
-        }, 2000)
+          navigate("/home");
+        }, 2000);
       })
       .catch((error) => {
         setLoading(false);
@@ -74,7 +74,7 @@ const AddFood = () => {
   };
 
   const notifySuccess = () => {
-    toast.success('Kuliner ditambahkan', {
+    toast.success("Kuliner ditambahkan", {
       position: "top-right",
       autoClose: 1000,
       hideProgressBar: false,
@@ -87,7 +87,7 @@ const AddFood = () => {
   };
 
   const notifyWarning = () => {
-    toast.error('Error', {
+    toast.error("Error", {
       position: "top-right",
       autoClose: 1000,
       hideProgressBar: false,
@@ -117,9 +117,7 @@ const AddFood = () => {
       >
         <div id="add-text" className="px-[2.5%]">
           <h1 className="text-white text-4xl font-bold">Tambah Kuliner</h1>
-          <p className="text-gray-500 text-sm">
-            Bagikan artikel anda disini
-          </p>
+          <p className="text-gray-500 text-sm">Bagikan artikel anda disini</p>
         </div>
         <form
           id="add-form"
@@ -128,14 +126,21 @@ const AddFood = () => {
         >
           <div id="form-parent" className="w-[50%] flex flex-col">
             <div className="flex flex-col">
-              <label className="text-white text-lg font-medium py-2 pl-1">Nama Kuliner</label>
-              <InputFood placeholder='Masukkan nama kuliner' type='text' value={nama_kuliner} onChange={(e) => setNama_kuliner(e.target.value)} />
+              <label className="text-white text-lg font-medium py-2 pl-1">
+                Nama Kuliner
+              </label>
+              <InputFood
+                placeholder="Masukkan nama kuliner"
+                type="text"
+                value={nama_kuliner}
+                onChange={(e) => setNama_kuliner(e.target.value)}
+              />
             </div>
             <div className="flex flex-col">
-              <label className="text-white text-lg font-medium py-2 pl-1">Foto Kuliner</label>
-              <div
-                className="w-full h-[265px] bg-[#292929] rounded-[12px] flex flex-col justify-center items-center cursor-pointer overflow-hidden border border-[#292929]"
-              >
+              <label className="text-white text-lg font-medium py-2 pl-1">
+                Foto Kuliner
+              </label>
+              <div className="w-full h-[265px] bg-[#292929] rounded-[12px] flex flex-col justify-center items-center cursor-pointer overflow-hidden border border-[#292929]">
                 {photo ? (
                   <img
                     className="w-full bg-center rounded-[20px] hover:opacity-70"
@@ -152,9 +157,13 @@ const AddFood = () => {
                     }}
                     className="w-full h-full flex justify-center items-center flex-col cursor-pointer rounded-[20px] bg-[#121212] hover:bg-[#000000]"
                   >
-                    <span><HiOutlinePhoto className="w-6 h-6 text-gray-400 mb-1" /></span>
+                    <span>
+                      <HiOutlinePhoto className="w-6 h-6 text-gray-400 mb-1" />
+                    </span>
                     <p className="text-gray-400">Masukkan Gambar</p>
-                    <p className="text-gray-400">file must be: jpg, pgeg, png.</p>
+                    <p className="text-gray-400">
+                      file must be: jpg, pgeg, png.
+                    </p>
                   </div>
                 )}
                 <input
@@ -168,11 +177,20 @@ const AddFood = () => {
           </div>
           <div id="form-children" className="w-[50%] flex flex-col">
             <div className="flex flex-col">
-              <label className="text-white text-lg font-medium py-2 pl-1">Daerah Asal</label>
-              <InputFood placeholder='Masukkan asal daerah' type='text' value={daerah} onChange={(e) => setDaerah(e.target.value)} />
+              <label className="text-white text-lg font-medium py-2 pl-1">
+                Daerah Asal
+              </label>
+              <InputFood
+                placeholder="Masukkan asal daerah"
+                type="text"
+                value={daerah}
+                onChange={(e) => setDaerah(e.target.value)}
+              />
             </div>
             <div className="flex flex-col">
-              <label className="text-white text-lg font-medium py-2 pl-1">Deskripsi</label>
+              <label className="text-white text-lg font-medium py-2 pl-1">
+                Deskripsi
+              </label>
               <textarea
                 placeholder="Masukkan Deskripsi"
                 className="w-full rounded-[20px] bg-[#121212] outline-none text-white p-3"

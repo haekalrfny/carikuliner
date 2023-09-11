@@ -14,6 +14,7 @@ const DetailFood = () => {
   const [loading, setLoading] = useState(false);
   const [like, setLike] = useState(false);
   const [showFullDescription, setShowFullDescription] = useState(false);
+  const [likeAnimation, setLikeAnimation] = useState(false);
 
   const user_id = localStorage.getItem("user_id");
   const role = localStorage.getItem("role");
@@ -94,6 +95,7 @@ const DetailFood = () => {
       .request(config)
       .then((response) => {
         console.log(response.data);
+        setLikeAnimation(true);
         setLike(response.data.status);
         getData();
       })
@@ -168,28 +170,28 @@ const DetailFood = () => {
                 <h2 className="text-white text-xl">{data.kuliner.daerah}</h2>
               </div>
               <div id="detail-2" className="w-full">
-  <h1
-    id="detail-2-h1"
-    className="text-[#f15e3c] text-lg font-bold "
-  >
-    Deskripsi :
-  </h1>
-  <div id="detail-2-p">
-    <p className="text-white text-justify">
-      {showFullDescription
-        ? data.kuliner.deskripsi
-        : data.kuliner.deskripsi.slice(0, 1100)}
-    {!showFullDescription && isDescriptionLong && (
-      <button
-        className="text-[#f15e3c] text-sm underline"
-        onClick={toggleDescription}
-      >
-        read more
-      </button>
-    )}
-    </p>
-  </div>
-</div>
+                <h1
+                  id="detail-2-h1"
+                  className="text-[#f15e3c] text-lg font-bold "
+                >
+                  Deskripsi :
+                </h1>
+                <div id="detail-2-p">
+                  <p className="text-white text-justify">
+                    {showFullDescription
+                      ? data.kuliner.deskripsi
+                      : data.kuliner.deskripsi.slice(0, 1100)}
+                    {!showFullDescription && isDescriptionLong && (
+                      <button
+                        className="text-[#f15e3c] text-sm underline"
+                        onClick={toggleDescription}
+                      >
+                        read more
+                      </button>
+                    )}
+                  </p>
+                </div>
+              </div>
               <div
                 id="detail-3"
                 className="flex items-center justify-between w-full"
@@ -206,15 +208,20 @@ const DetailFood = () => {
                 <div className="flex items-center gap-1">
                   {like ? (
                     <IoHeart
-                      className="text-red-500 cursor-pointer text-xl"
+                      className={`text-red-500 cursor-pointer text-xl ${
+                        likeAnimation ? "animate-like" : ""
+                      }`}
                       onClick={handleLike}
                     />
                   ) : (
                     <IoHeart
-                      className="text-gray-400 cursor-pointer text-xl"
+                      className={`text-gray-400 cursor-pointer text-xl ${
+                        likeAnimation ? "animate-like" : ""
+                      }`}
                       onClick={handleLike}
                     />
                   )}
+
                   {data.likeTotal === 0 ? (
                     <p></p>
                   ) : data.likeTotal === 1 ? (
